@@ -5,8 +5,84 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SeriesDownloader"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="800" Width="800">
+
+
+	<Window.Resources>
+		<local:ImageConverter x:Key="imageConverter"/>
+		<Style x:Key="PosterPathTemplate" TargetType="ToolTip">
+			<Setter Property="OverridesDefaultStyle" Value="true"/>
+			<Setter Property="HasDropShadow" Value="True"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ToolTip">
+						<Border CornerRadius="7" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="5" 
+						        BorderThickness="3,3,3,3" >
+							<Border.Background>
+								<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+									<GradientStop Color="Transparent" Offset="0"/>
+									<GradientStop Color="Transparent" Offset="1"/>
+								</LinearGradientBrush>
+							</Border.Background>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="80" />
+									<ColumnDefinition Width="80" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="80"/>
+									<RowDefinition Height="80"/>
+								</Grid.RowDefinitions>
+								<Image Source="{Binding PosterPath, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource imageConverter}}" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="3" Stretch="Fill"/>
+								<TextBlock FontFamily="Tahoma" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" FontSize="13" 
+								           Text="{TemplateBinding Content}" 
+								           Foreground="Black" TextWrapping="Wrap" FontWeight="ExtraBold" Margin="35"/>
+							</Grid>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Window.Resources>
+
+
+	<Grid>
+		<TextBox HorizontalAlignment="Left" Height="23" Margin="48,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="251" x:Name="seachText" Text="supernatural" Grid.ColumnSpan="2"/>
+		<Label Content="Name&#x9;" HorizontalAlignment="Left" Margin="5,26,0,0" VerticalAlignment="Top"/>
+		<Button Content="Search" HorizontalAlignment="Left" Margin="314,29,0,0" VerticalAlignment="Top" Width="75" Click="ButtonBase_OnClick"/>
+		<Label Content="" HorizontalAlignment="Left" Margin="402,29,0,0" VerticalAlignment="Top" Width="335" x:Name="errorLabel" FontWeight="Bold"/>
+		<DataGrid ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="10,60,55,469" x:Name="SearchGrid" IsReadOnly="True" MouseDoubleClick="SearchGrid_OnMouseDoubleClick" Grid.ColumnSpan="2">
+			<DataGrid.Columns>
+				<DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+				<DataGridTextColumn Binding="{Binding PosterPath}" Header="PosterPath" />
+
+
+				<DataGridTemplateColumn Header="Poster Path" >
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate >
+							<TextBlock>
+								<TextBlock.ToolTip>
+									<ToolTip Style="{StaticResource PosterPathTemplate}" Content="content..."/>
+								</TextBlock.ToolTip>
+							</TextBlock>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTextColumn Binding="{Binding Overview}" Header="Overview" />
+
+			</DataGrid.Columns>
+		</DataGrid>
+
+		<Label Content="Torrents&#x9;" HorizontalAlignment="Left" Margin="10,320,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.328,0.811"/>
+		<DataGrid ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="10,351,55,243" x:Name="TorrentGrid" IsReadOnly="True" MouseDoubleClick="SearchGrid_OnMouseDoubleClick" Grid.ColumnSpan="2">
+			<!--<DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+			<DataGridTextColumn Binding="{Binding PosterPath}" Header="Size" />
+			<DataGridTextColumn Binding="{Binding PosterPath}" Header="Seeders" />-->
+		</DataGrid>
+
+	</Grid>
+
+
+
 </Window>
